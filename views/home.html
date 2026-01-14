@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - PreeCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7c3aed',
+                        secondary: '#ec4899',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-purple-50 via-white to-pink-50 min-h-screen">
+    <div class="container mx-auto px-4 py-6 max-w-md">
+        
+        <!-- Header -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 mb-6">
+            <div class="flex items-center justify-between mb-2">
+                <img src="/images/preecare-logo.png" alt="PreeCare Logo" style="height: 85px; width: auto;">
+                <button onclick="logout()" class="bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white font-bold px-4 py-2 rounded-xl text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                    Logout
+                </button>
+            </div>
+            <p class="font-bold text-sm text-gray-600">
+            Halo, 
+            <span id="userGreeting" class="font-bold" style="color: rgb(45, 140, 250);"></span>
+            </p>
+        </div>
+
+        <!-- Menu Utama -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">Menu Utama</h2>
+            <p class="text-sm text-gray-500 mb-6">Pilih menu yang Anda butuhkan</p>
+
+            <div class="space-y-4">
+                <!-- Screening Menu -->
+                <a href="/screening" class="block bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 rounded-2xl p-5 text-white transition-all transform hover:-translate-y-1 hover:shadow-xl">
+                    <div class="flex items-center">
+                        <div class="bg-white/20 backdrop-blur-sm rounded-xl p-3 mr-4">
+                            <span class="text-3xl">📋</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold mb-1">Screening</h3>
+                            <p class="text-sm opacity-90">Pemeriksaan risiko preeklampsi ibu hamil</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Edukasi Menu -->
+                <a href="/edukasi" class="block bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-2xl p-5 text-white transition-all transform hover:-translate-y-1 hover:shadow-xl">
+                    <div class="flex items-center">
+                        <div class="bg-white/20 backdrop-blur-sm rounded-xl p-3 mr-4">
+                            <span class="text-3xl">📚</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold mb-1">Edukasi</h3>
+                            <p class="text-sm opacity-90">Informasi kesehatan ibu hamil</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Riwayat Menu -->
+                <a href="/riwayat" class="block bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 rounded-2xl p-5 text-white transition-all transform hover:-translate-y-1 hover:shadow-xl">
+                    <div class="flex items-center">
+                        <div class="bg-white/20 backdrop-blur-sm rounded-xl p-3 mr-4">
+                            <span class="text-3xl">📊</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold mb-1">Riwayat</h3>
+                            <p class="text-sm opacity-90">Data pemeriksaan yang tersimpan</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/';
+        }
+
+        document.getElementById('userGreeting').textContent = localStorage.getItem('namaLengkap') || 'Pengguna';
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

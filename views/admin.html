@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PreeCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7c3aed',
+                        secondary: '#ec4899',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-purple-50 via-white to-pink-50 min-h-screen">
+    <div class="container mx-auto px-4 py-6 max-w-6xl">
+        
+        <!-- Header -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img src="/images/preecare-logo.png" alt="PreeCare Logo" style="height: 35px; width: auto;">
+                    <span class="text-base font-bold text-gray-700">Admin Dashboard</span>
+                </div>
+                <button onclick="logout()" class="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold px-4 py-2 rounded-xl text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm opacity-90">Total Warga</p>
+                        <p id="totalWarga" class="text-3xl font-bold mt-1">0</p>
+                    </div>
+                    <div class="bg-white/20 rounded-xl p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl p-6 text-white shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm opacity-90">Total Pemeriksaan</p>
+                        <p id="totalScreening" class="text-3xl font-bold mt-1">0</p>
+                    </div>
+                    <div class="bg-white/20 rounded-xl p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 text-white shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm opacity-90">Risiko Tinggi</p>
+                        <p id="risikoTinggi" class="text-3xl font-bold mt-1">0</p>
+                    </div>
+                    <div class="bg-white/20 rounded-xl p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900">Semua Data Screening</h2>
+                <button onclick="downloadExcel()" class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold px-4 py-2 rounded-xl text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download Excel
+                </button>
+            </div>
+
+            <!-- Loading -->
+            <div id="loadingData" class="text-center py-20">
+                <div class="inline-block w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+                <p class="text-sm text-gray-500 mt-4">Memuat data...</p>
+            </div>
+
+            <!-- Table Container -->
+            <div id="dataContainer" class="hidden overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-purple-50 to-pink-50 border-b-2 border-purple-200">
+                            <th class="text-left p-3 font-bold text-purple-900">Nakes/Kader</th>
+                            <th class="text-left p-3 font-bold text-purple-900">Nama Warga</th>
+                            <th class="text-left p-3 font-bold text-purple-900">NIK</th>
+                            <th class="text-left p-3 font-bold text-purple-900">No Reg</th>
+                            <th class="text-center p-3 font-bold text-purple-900">Jumlah Pemeriksaan</th>
+                            <th class="text-center p-3 font-bold text-purple-900">Status Terakhir</th>
+                            <th class="text-center p-3 font-bold text-purple-900">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-20">
+                <p class="text-gray-500">Belum ada data screening.</p>
+            </div>
+        </div>
+
+        <!-- Detail Modal -->
+        <div id="detailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-gray-900">Detail Riwayat Pemeriksaan</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="modalContent" class="p-6">
+                    <!-- Content will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Check admin access
+        if (!localStorage.getItem('token') || localStorage.getItem('isAdmin') !== 'true') {
+            window.location.href = '/';
+        }
+
+        let allData = [];
+
+        const pertanyaanText = {
+            'penghasilanKurangUMR': 'Penghasilan < UMR (Rp 3.042.000)',
+            'hamilLebihSatuKali': 'Hamil lebih dari 1 kali',
+            'keturunanKeracunan': 'Ada Keturunan Keracunan Kehamilan',
+            'usiaBerisiko': 'Usia < 20 th atau > 35 th',
+            'riwayatTekananDarah': 'Ada Riwayat tekanan darah tinggi',
+            'gemuk': 'Gemuk (IMT > 25)',
+            'riwayatKeracunan': 'Ada Riwayat Keracunan Kehamilan',
+            'riwayatDM': 'Ada Riwayat kencing manis (DM)'
+        };
+
+        window.addEventListener('DOMContentLoaded', loadAllData);
+
+        async function loadAllData() {
+            try {
+                const response = await fetch('/api/screening/admin/all-data');
+                const result = await response.json();
+
+                document.getElementById('loadingData').classList.add('hidden');
+
+                if (result.success && result.data.length > 0) {
+                    allData = result.data;
+                    
+                    // Update stats
+                    let totalWarga = result.data.length;
+                    let totalScreening = 0;
+                    let risikoTinggi = 0;
+
+                    result.data.forEach(item => {
+                        totalScreening += item.screenings.length;
+                        const latestScreening = item.screenings[0];
+                        if (latestScreening.kategoriRisiko === 'Risiko Tinggi') {
+                            risikoTinggi++;
+                        }
+                    });
+
+                    document.getElementById('totalWarga').textContent = totalWarga;
+                    document.getElementById('totalScreening').textContent = totalScreening;
+                    document.getElementById('risikoTinggi').textContent = risikoTinggi;
+
+                    // Populate table
+                    let html = '';
+                    result.data.forEach((item, index) => {
+                        const warga = item.warga;
+                        const jumlahScreening = item.screenings.length;
+                        const latestScreening = item.screenings[0];
+                        
+                        const badgeClass = latestScreening.kategoriRisiko === 'Risiko Rendah' 
+                            ? 'bg-emerald-100 text-emerald-800' 
+                            : 'bg-red-100 text-red-800';
+
+                        html += `
+                            <tr class="border-b border-gray-100 hover:bg-purple-50 transition-all">
+                                <td class="p-3 text-gray-700">${warga.nakesKader}</td>
+                                <td class="p-3 font-semibold text-gray-900">${warga.nama}</td>
+                                <td class="p-3 text-gray-600">${warga.nik}</td>
+                                <td class="p-3 text-gray-600">${warga.noReg}</td>
+                                <td class="p-3 text-center text-gray-700">${jumlahScreening}x</td>
+                                <td class="p-3 text-center">
+                                    <span class="${badgeClass} text-xs font-semibold px-3 py-1.5 rounded-full inline-block">
+                                        ${latestScreening.kategoriRisiko}
+                                    </span>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <button onclick="showDetail(${index})" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all">
+                                        Detail
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    document.getElementById('tableBody').innerHTML = html;
+                    document.getElementById('dataContainer').classList.remove('hidden');
+                } else {
+                    document.getElementById('emptyState').classList.remove('hidden');
+                }
+            } catch (error) {
+                document.getElementById('loadingData').classList.add('hidden');
+                console.error('Gagal memuat data:', error);
+            }
+        }
+
+        function showDetail(index) {
+            const data = allData[index];
+            const warga = data.warga;
+            const screenings = data.screenings;
+
+            let html = `
+                <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl p-6 mb-6">
+                    <h4 class="text-lg font-bold text-purple-900 mb-3">${warga.nama}</h4>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <p class="text-gray-600">Nakes/Kader:</p>
+                            <p class="font-semibold text-gray-900">${warga.nakesKader}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">NIK:</p>
+                            <p class="font-semibold text-gray-900">${warga.nik}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">No Reg:</p>
+                            <p class="font-semibold text-gray-900">${warga.noReg}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="text-base font-bold text-gray-900 mb-4">Riwayat Pemeriksaan (${screenings.length}x)</h5>
+                <div class="space-y-3">
+            `;
+
+            screenings.forEach((screening, idx) => {
+                const tanggal = new Date(screening.tanggalPemeriksaan).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const badgeClass = screening.kategoriRisiko === 'Risiko Rendah' 
+                    ? 'bg-emerald-100 text-emerald-800' 
+                    : 'bg-red-100 text-red-800';
+
+                html += `
+                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <h6 class="font-bold text-gray-900">Pemeriksaan #${screenings.length - idx}</h6>
+                            <span class="${badgeClass} text-xs font-semibold px-3 py-1.5 rounded-full">
+                                ${screening.kategoriRisiko}
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 text-sm mb-3">
+                            <div>
+                                <p class="text-gray-600">Tanggal:</p>
+                                <p class="font-semibold text-gray-900">${tanggal}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Dx:</p>
+                                <p class="font-semibold text-gray-900">${warga.dx || '-'}</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-gray-200">
+                            <p class="text-sm font-semibold text-purple-900 mb-2">Total Skor: ${screening.totalSkor}</p>
+                            <p class="text-xs text-gray-600">${screening.rekomendasi}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        async function downloadExcel() {
+            try {
+                const originalButton = event.target.closest('button');
+                const originalHTML = originalButton.innerHTML;
+                originalButton.disabled = true;
+                originalButton.innerHTML = `
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Mengunduh...</span>
+                `;
+
+                const response = await fetch('/api/screening/admin/download-excel');
+                
+                if (!response.ok) {
+                    throw new Error('Gagal mengunduh file');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `All_Data_Screening_${new Date().getTime()}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                originalButton.disabled = false;
+                originalButton.innerHTML = originalHTML;
+            } catch (error) {
+                console.error('Error downloading Excel:', error);
+                alert('Gagal mengunduh file Excel. Silakan coba lagi.');
+                
+                const button = event.target.closest('button');
+                button.disabled = false;
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download Excel
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

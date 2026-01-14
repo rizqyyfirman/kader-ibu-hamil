@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PreeCare - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7c3aed',
+                        secondary: '#ec4899',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-purple-50 via-white to-pink-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-md">
+        
+        <!-- Logo Section -->
+        <div class="text-center mb-8">
+            <img src="/images/preecare-logo.png" alt="PreeCare Logo" class="mx-auto mb-4" style="width: 227.5px; height: 87px;">
+            <p class="text-sm text-gray-500">Sistem Edukasi & Pendataan</p>
+        </div>
+
+        <!-- Main Card - Pilihan -->
+        <div id="mainCard" class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Selamat Datang</h2>
+            <p class="text-sm text-gray-500 mb-6 text-center">Silakan pilih menu di bawah ini</p>
+            
+            <div class="space-y-3">
+                <button onclick="showLogin()" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                    Login
+                </button>
+                <button onclick="showRegister()" class="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                    Register
+                </button>
+            </div>
+        </div>
+
+        <!-- Login Card -->
+        <div id="loginCard" class="hidden bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Login</h2>
+            <p class="text-sm text-gray-500 mb-6 text-center">Masuk ke akun Anda</p>
+            
+            <div id="loginAlert"></div>
+            
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">User ID</label>
+                    <input type="text" id="loginUserId" required autocomplete="username"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="loginPassword" required autocomplete="current-password"
+                            class="w-full px-4 py-3 pr-12 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                        <button type="button" onclick="togglePassword('loginPassword', this)"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="space-y-3 pt-2">
+                    <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                        Login
+                    </button>
+                    <button type="button" onclick="showMain()" class="w-full bg-white hover:bg-gray-50 text-purple-600 font-semibold py-3.5 px-6 rounded-xl border-2 border-purple-600 transition-all">
+                        Kembali
+                    </button>
+                </div>
+            </form>
+            
+            <div class="text-center mt-4">
+                <a href="#" onclick="showForgot(); return false;" class="text-sm text-purple-600 hover:text-purple-700 font-semibold">
+                    Lupa ID/Password?
+                </a>
+            </div>
+        </div>
+
+        <!-- Register Card -->
+        <div id="registerCard" class="hidden bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Register</h2>
+            <p class="text-sm text-gray-500 mb-6 text-center">Daftarkan akun baru</p>
+            
+            <div id="registerAlert"></div>
+            
+            <form id="registerForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
+                    <input type="text" id="regNamaLengkap" required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">User ID</label>
+                    <input type="text" id="regUserId" required autocomplete="username"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <p id="userIdNote" class="text-xs mt-1.5"></p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="regPassword" required autocomplete="new-password"
+                            class="w-full px-4 py-3 pr-12 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <button type="button" onclick="togglePassword('regPassword', this)"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p id="passwordNote" class="text-xs text-gray-500 mt-1.5">Minimal 1 huruf besar dan 1 angka</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Konfirmasi Password</label>
+                    <div class="relative">
+                        <input type="password" id="regConfirmPassword" required autocomplete="new-password"
+                            class="w-full px-4 py-3 pr-12 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <button type="button" onclick="togglePassword('regConfirmPassword', this)"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p id="confirmPasswordNote" class="text-xs mt-1.5"></p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                    <input type="email" id="regEmail" required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Lahir</label>
+                    <input type="date" id="regTanggalLahir" required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat</label>
+                    <textarea id="regAlamat" required rows="2"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor Telepon</label>
+                    <input type="tel" id="regNomorTelepon" required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                
+                <div class="space-y-3 pt-2">
+                    <button type="submit" id="registerBtn" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                        Daftar
+                    </button>
+                    <button type="button" onclick="showMain()" class="w-full bg-white hover:bg-gray-50 text-purple-600 font-semibold py-3.5 px-6 rounded-xl border-2 border-purple-600 transition-all">
+                        Kembali
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Forgot Card - Step 1: Verifikasi -->
+        <div id="forgotCard" class="hidden bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Lupa ID/Password</h2>
+            <p class="text-sm text-gray-500 mb-6 text-center">Masukkan data untuk verifikasi</p>
+            
+            <div id="forgotAlert"></div>
+            
+            <form id="forgotForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
+                    <input type="text" id="forgotNamaLengkap" required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Lahir</label>
+                    <input type="date" id="forgotTanggalLahir" required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                    Lupa ID/Password
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <a href="#" onclick="showLogin(); return false;" class="text-sm text-purple-600 hover:text-purple-700 font-semibold">
+                    Kembali ke Login
+                </a>
+            </div>
+        </div>
+
+        <!-- Data Found Card - Step 2: Tampilkan ID & Password -->
+        <div id="dataFoundCard" class="hidden bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Lupa ID/Password</h2>
+            <p class="text-sm text-gray-500 mb-6 text-center">Masukkan data untuk verifikasi</p>
+            
+            <!-- Info Data Ditemukan -->
+            <div class="bg-gradient-to-br from-emerald-50 to-green-50 border-l-4 border-emerald-500 rounded-xl p-5 mb-6 shadow-lg">
+                <h3 class="text-base font-bold text-emerald-900 mb-3">✅ Data Ditemukan!</h3>
+                <div class="space-y-3">
+                    <div class="bg-white rounded-lg p-4 border border-emerald-200">
+                        <p class="text-xs text-gray-600 mb-1">User ID:</p>
+                        <p id="displayUserId" class="text-lg font-bold text-purple-700"></p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-emerald-200">
+                        <p class="text-xs text-gray-600 mb-1">Password:</p>
+                        <p id="displayPassword" class="text-lg font-bold text-pink-700"></p>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-600 mt-4 text-center">Silakan catat dan simpan data ini dengan aman</p>
+            </div>
+
+            <button onclick="showResetPasswordForm()" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all mb-3">
+                Buat Password Baru
+            </button>
+            
+            <div class="text-center">
+                <a href="#" onclick="showLogin(); return false;" class="text-sm text-purple-600 hover:text-purple-700 font-semibold">
+                    Kembali ke Login
+                </a>
+            </div>
+        </div>
+
+        <!-- Reset Password Card - Step 3: Form Password Baru -->
+        <div id="resetPasswordCard" class="hidden bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">Buat Password Baru</h2>
+            <p class="text-sm text-gray-500 mb-6 text-center">Masukkan password baru Anda</p>
+            
+            <div id="resetAlert"></div>
+
+            <!-- Form Reset Password -->
+            <form id="resetPasswordForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Password Baru</label>
+                    <div class="relative">
+                        <input type="password" id="newPassword" required autocomplete="new-password"
+                            class="w-full px-4 py-3 pr-12 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <button type="button" onclick="togglePassword('newPassword', this)"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p id="newPasswordNote" class="text-xs text-gray-500 mt-1.5">Minimal 1 huruf besar dan 1 angka</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Konfirmasi Password Baru</label>
+                    <div class="relative">
+                        <input type="password" id="confirmNewPassword" required autocomplete="new-password"
+                            class="w-full px-4 py-3 pr-12 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <button type="button" onclick="togglePassword('confirmNewPassword', this)"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p id="confirmNewPasswordNote" class="text-xs mt-1.5"></p>
+                </div>
+                
+                <button type="submit" id="resetPasswordBtn" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                    Buat Password Baru
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <a href="#" onclick="showLogin(); return false;" class="text-sm text-purple-600 hover:text-purple-700 font-semibold">
+                    Kembali ke Login
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentUserIdInternal = null;
+
+        function showMain() {
+            hideAllCards();
+            document.getElementById('mainCard').classList.remove('hidden');
+            clearAlerts();
+        }
+
+        function showLogin() {
+            hideAllCards();
+            document.getElementById('loginCard').classList.remove('hidden');
+            clearAlerts();
+        }
+
+        function showRegister() {
+            hideAllCards();
+            document.getElementById('registerCard').classList.remove('hidden');
+            clearAlerts();
+        }
+
+        function showForgot() {
+            hideAllCards();
+            document.getElementById('forgotCard').classList.remove('hidden');
+            clearAlerts();
+        }
+
+        function showResetPasswordForm() {
+            hideAllCards();
+            document.getElementById('resetPasswordCard').classList.remove('hidden');
+            // Reset form
+            document.getElementById('resetPasswordForm').reset();
+            document.getElementById('newPasswordNote').textContent = 'Minimal 1 huruf besar dan 1 angka';
+            document.getElementById('newPasswordNote').className = 'text-xs text-gray-500 mt-1.5';
+            document.getElementById('confirmNewPasswordNote').textContent = '';
+            document.getElementById('newPassword').classList.remove('border-red-500', 'border-green-500', 'bg-red-50', 'bg-green-50');
+            document.getElementById('confirmNewPassword').classList.remove('border-red-500', 'border-green-500', 'bg-red-50', 'bg-green-50');
+        }
+
+        function hideAllCards() {
+            document.getElementById('mainCard').classList.add('hidden');
+            document.getElementById('loginCard').classList.add('hidden');
+            document.getElementById('registerCard').classList.add('hidden');
+            document.getElementById('forgotCard').classList.add('hidden');
+            document.getElementById('dataFoundCard').classList.add('hidden');
+            document.getElementById('resetPasswordCard').classList.add('hidden');
+        }
+
+        function clearAlerts() {
+            document.getElementById('loginAlert').innerHTML = '';
+            document.getElementById('registerAlert').innerHTML = '';
+            document.getElementById('forgotAlert').innerHTML = '';
+            if (document.getElementById('resetAlert')) {
+                document.getElementById('resetAlert').innerHTML = '';
+            }
+        }
+
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const svg = button.querySelector('svg');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                svg.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                `;
+            } else {
+                input.type = 'password';
+                svg.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                `;
+            }
+        }
+
+        // Real-time User ID Check
+        let checkTimeout;
+        document.getElementById('regUserId').addEventListener('input', function() {
+            const userId = this.value.trim();
+            const note = document.getElementById('userIdNote');
+            const input = this;
+            
+            if (userId.length < 3) {
+                note.textContent = '';
+                input.classList.remove('border-red-500', 'border-green-500', 'bg-red-50', 'bg-green-50');
+                return;
+            }
+            
+            clearTimeout(checkTimeout);
+            checkTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/auth/check-userid?userId=${encodeURIComponent(userId)}`);
+                    const result = await response.json();
+                    
+                    if (result.available) {
+                        note.textContent = '✓ User ID tersedia';
+                        note.className = 'text-xs mt-1.5 text-green-600 font-medium';
+                        input.classList.remove('border-red-500', 'bg-red-50');
+                        input.classList.add('border-green-500', 'bg-green-50');
+                    } else {
+                        note.textContent = '✗ User ID sudah digunakan';
+                        note.className = 'text-xs mt-1.5 text-red-600 font-medium';
+                        input.classList.remove('border-green-500', 'bg-green-50');
+                        input.classList.add('border-red-500', 'bg-red-50');
+                    }
+                } catch (error) {
+                    console.error('Error checking user ID:', error);
+                }
+            }, 500);
+        });
+
+        // Real-time Password Validation - Register
+        document.getElementById('regPassword').addEventListener('input', function() {
+            validatePasswordInput(this.value, 'passwordNote', this);
+            validateConfirmPassword();
+        });
+
+        document.getElementById('regConfirmPassword').addEventListener('input', validateConfirmPassword);
+
+        function validateConfirmPassword() {
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const note = document.getElementById('confirmPasswordNote');
+            const input = document.getElementById('regConfirmPassword');
+            
+            if (confirmPassword.length === 0) {
+                note.textContent = '';
+                input.classList.remove('border-red-500', 'border-green-500', 'bg-red-50', 'bg-green-50');
+            } else if (password === confirmPassword) {
+                note.textContent = '✓ Password cocok';
+                note.className = 'text-xs mt-1.5 text-green-600 font-medium';
+                input.classList.remove('border-red-500', 'bg-red-50');
+                input.classList.add('border-green-500', 'bg-green-50');
+            } else {
+                note.textContent = '✗ Password tidak cocok';
+                note.className = 'text-xs mt-1.5 text-red-600 font-medium';
+                input.classList.remove('border-green-500', 'bg-green-50');
+                input.classList.add('border-red-500', 'bg-red-50');
+            }
+        }
+
+        // Real-time Password Validation - Reset Password
+        document.getElementById('newPassword').addEventListener('input', function() {
+            validatePasswordInput(this.value, 'newPasswordNote', this);
+            validateConfirmNewPassword();
+        });
+
+        document.getElementById('confirmNewPassword').addEventListener('input', validateConfirmNewPassword);
+
+        function validatePasswordInput(password, noteId, input) {
+            const note = document.getElementById(noteId);
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            
+            if (password.length === 0) {
+                note.textContent = 'Minimal 1 huruf besar dan 1 angka';
+                note.className = 'text-xs text-gray-500 mt-1.5';
+                input.classList.remove('border-red-500', 'border-green-500', 'bg-red-50', 'bg-green-50');
+            } else if (hasUpperCase && hasNumber) {
+                note.textContent = '✓ Password valid';
+                note.className = 'text-xs mt-1.5 text-green-600 font-medium';
+                input.classList.remove('border-red-500', 'bg-red-50');
+                input.classList.add('border-green-500', 'bg-green-50');
+            } else {
+                let missing = [];
+                if (!hasUpperCase) missing.push('huruf besar');
+                if (!hasNumber) missing.push('angka');
+                note.textContent = '✗ Harus ada ' + missing.join(' dan ');
+                note.className = 'text-xs mt-1.5 text-red-600 font-medium';
+                input.classList.remove('border-green-500', 'bg-green-50');
+                input.classList.add('border-red-500', 'bg-red-50');
+            }
+        }
+
+        function validateConfirmNewPassword() {
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            const note = document.getElementById('confirmNewPasswordNote');
+            const input = document.getElementById('confirmNewPassword');
+            
+            if (confirmPassword.length === 0) {
+                note.textContent = '';
+                input.classList.remove('border-red-500', 'border-green-500', 'bg-red-50', 'bg-green-50');
+            } else if (password === confirmPassword) {
+                note.textContent = '✓ Password cocok';
+                note.className = 'text-xs mt-1.5 text-green-600 font-medium';
+                input.classList.remove('border-red-500', 'bg-red-50');
+                input.classList.add('border-green-500', 'bg-green-50');
+            } else {
+                note.textContent = '✗ Password tidak cocok';
+                note.className = 'text-xs mt-1.5 text-red-600 font-medium';
+                input.classList.remove('border-green-500', 'bg-green-50');
+                input.classList.add('border-red-500', 'bg-red-50');
+            }
+        }
+
+        // Handle Register
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const userId = document.getElementById('regUserId').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            if (document.getElementById('regUserId').classList.contains('border-red-500')) {
+                showAlert('registerAlert', 'User ID sudah digunakan. Silakan pilih yang lain.', 'error');
+                return;
+            }
+            
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            
+            if (!hasUpperCase || !hasNumber) {
+                showAlert('registerAlert', 'Password harus mengandung minimal 1 huruf besar dan 1 angka', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showAlert('registerAlert', 'Password dan konfirmasi password tidak cocok', 'error');
+                return;
+            }
+            
+            const data = {
+                namaLengkap: document.getElementById('regNamaLengkap').value.trim(),
+                userId: userId,
+                password: password,
+                confirmPassword: confirmPassword,
+                email: document.getElementById('regEmail').value.trim(),
+                tanggalLahir: document.getElementById('regTanggalLahir').value,
+                alamat: document.getElementById('regAlamat').value.trim(),
+                nomorTelepon: document.getElementById('regNomorTelepon').value.trim()
+            };
+            
+            const btn = document.getElementById('registerBtn');
+            btn.disabled = true;
+            btn.textContent = 'Mendaftar...';
+            
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('registerAlert', 'Registrasi berhasil! Mengalihkan ke halaman login...', 'success');
+                    document.getElementById('registerForm').reset();
+                    
+                    setTimeout(() => {
+                        showLogin();
+                    }, 2000);
+                } else {
+                    showAlert('registerAlert', result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Register error:', error);
+                showAlert('registerAlert', 'Terjadi kesalahan. Silakan coba lagi.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Daftar';
+            }
+        });
+
+        // Handle Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                userId: document.getElementById('loginUserId').value.trim(),
+                password: document.getElementById('loginPassword').value
+            };
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    localStorage.setItem('token', result.token);
+                    localStorage.setItem('userId', result.user.userId);
+                    localStorage.setItem('namaLengkap', result.user.namaLengkap);
+                    
+                    // Redirect based on user type
+                    if (result.isAdmin) {
+                        localStorage.setItem('isAdmin', 'true');
+                        window.location.href = '/admin';
+                    } else {
+                        localStorage.setItem('isAdmin', 'false');
+                        window.location.href = '/home';
+                    }
+                } else {
+                    showAlert('loginAlert', result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('loginAlert', 'Terjadi kesalahan. Silakan coba lagi.', 'error');
+            }
+        });
+
+        // Handle Forgot Password - Step 1
+        document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                namaLengkap: document.getElementById('forgotNamaLengkap').value.trim(),
+                tanggalLahir: document.getElementById('forgotTanggalLahir').value
+            };
+            
+            try {
+                const response = await fetch('/api/auth/forgot', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Simpan data untuk reset password
+                    currentUserIdInternal = result.userIdInternal;
+                    
+                    // Tampilkan data user
+                    document.getElementById('displayUserId').textContent = result.userId;
+                    document.getElementById('displayPassword').textContent = result.password || 'Tidak tersedia';
+                    
+                    // Pindah ke card data found
+                    hideAllCards();
+                    document.getElementById('dataFoundCard').classList.remove('hidden');
+                } else {
+                    showAlert('forgotAlert', result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Forgot error:', error);
+                showAlert('forgotAlert', 'Terjadi kesalahan. Silakan coba lagi.', 'error');
+            }
+        });
+
+        // Handle Reset Password - Step 2
+        document.getElementById('resetPasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            
+            const hasUpperCase = /[A-Z]/.test(newPassword);
+            const hasNumber = /[0-9]/.test(newPassword);
+            
+            if (!hasUpperCase || !hasNumber) {
+                showAlert('resetAlert', 'Password harus mengandung minimal 1 huruf besar dan 1 angka', 'error');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showAlert('resetAlert', 'Password dan konfirmasi password tidak cocok', 'error');
+                return;
+            }
+            
+            const data = {
+                userIdInternal: currentUserIdInternal,
+                newPassword: newPassword,
+                confirmPassword: confirmPassword
+            };
+            
+            const btn = document.getElementById('resetPasswordBtn');
+            btn.disabled = true;
+            btn.textContent = 'Memproses...';
+            
+            try {
+                const response = await fetch('/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('resetAlert', 'Password berhasil diubah! Mengalihkan ke halaman login...', 'success');
+                    
+                    setTimeout(() => {
+                        showLogin();
+                    }, 2000);
+                } else {
+                    showAlert('resetAlert', result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Reset password error:', error);
+                showAlert('resetAlert', 'Terjadi kesalahan. Silakan coba lagi.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Buat Password Baru';
+            }
+        });
+
+        function showAlert(elementId, message, type) {
+            const alertDiv = document.getElementById(elementId);
+            const bgColor = type === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800';
+            alertDiv.innerHTML = `<div class="${bgColor} border-l-4 p-4 rounded-lg mb-4 text-sm font-medium">${message}</div>`;
+            if (type !== 'success') {
+                setTimeout(() => {
+                    alertDiv.innerHTML = '';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
