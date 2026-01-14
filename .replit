@@ -35,4 +35,5 @@ externalPort = 80
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["node", "server.js"]
+run = ["sh", "-c", "npm start"]
+build = ["sh", "-c", "npm install"]
